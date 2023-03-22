@@ -2,47 +2,51 @@
 #250201017 Yağmur Nisa Şekerci
 #260201011 Mert Ayaz Özkan
 
-# Get the search directory from the user
-read -p "Enter the name of the directory: " Directory
+echo "Enter the name of the directory:"
+read directory
 
-# Get the search keyword from the user
-read -p "Enter the search keyword: " Keyword
-
-
+echo "Enter the keyword:"
+read keyword
 
 function copy(){
 
 	# Create the Found directory if it doesn't already exist
-	if [ ! -d Found ]; then
-    	mkdir Found
+	if [ ! -d "Found" ]; then
+  		mkdir Found
 	fi
 
-	# Loop through all the files in the search directory
-	for file in "$Directory"/*
-		do
-    		# Check if the file contains the search keyword
-    		if grep -q "$Keyword" "$file"; then
-        		# Copy the file to the Found directory
-        		cp "$file" Found/
-        		echo "File '$file' was copied to the Found 			directory."
-    		fi
-		done
+	# Search for files containing keyword
+	found=false
 
-		# Check if any files were copied to the Found directory
-		if [ "$(ls -A Found)" ]; then
-    			echo "The following files were found:"
-    			ls Found/
-		else
-    			echo "Keyword not found in files."
-		fi
+	for file in "${directory}/"*; 
+	do
+  		if grep -q "${keyword}" "${file}"; then
+    			found=true
+    			cp "${file}" Found/
+  		fi
+	done
+
+	if [ $found == true ]; then
+  		echo "Files copied to the Found directory!"
+  		echo "Files in the Found directory:"
+  		ls Found/
+	else
+  		echo "Keyword not found in files."
+	fi
 }
-
-
 
 copy
 
-function display_details(){
 
-
+function modification_details(){
+	for file in "Found/"*; 
+	
+		do
+  		modification=$(stat -c "File %n: %F was modified by %U on %y" "${file}")
+  		echo "${modification}" >> Found/modification_details.txt
+		done
 
 }
+
+modification_details
+
