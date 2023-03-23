@@ -39,7 +39,7 @@ modification_details(){
 		then
 			for file in "Found/"*; 
 				do
-					modification=$(stat -c "File $num: %n was modified by %U on %y" "${file}")
+					modification=$("File $num: %n was modified by %U on $(date -r"${file}" %m,%d,%Y at %H:%M)")
 					echo "${modification}"
 					echo "${modification}" >> Found/modification_details.txt
 					num=$((num+1))
