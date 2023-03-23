@@ -34,10 +34,10 @@ copy () {
 copy
 
 modification_details(){
-	num=0
+	num=1
 	if [ -d "Found" ]
 		then
-			for file in "Found/"
+			for file in "Found/"*; 
 				do
 					modification=$(stat -c "File $num: %n was modified by %U on %y" "${file}")
 					echo "${modification}"
