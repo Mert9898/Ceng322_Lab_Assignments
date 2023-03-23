@@ -22,7 +22,10 @@ function copy(){
 	do
   		if grep -q "${keyword}" "${file}"; then
     			found=true
-    			cp "${file}" Found/
+    			 filename=$(basename "${file}")
+    			newname="Found_${filename}"
+    			# Copy file to Found directory with new name
+    			cp "${file}" "Found/${newname}"
   		fi
 	done
 
@@ -43,6 +46,7 @@ function modification_details(){
 	
 		do
   		modification=$(stat -c "File %n: %F was modified by %U on %y" "${file}")
+		echo "${modification}"
   		echo "${modification}" >> Found/modification_details.txt
 		done
 
