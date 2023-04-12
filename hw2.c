@@ -61,6 +61,18 @@ int main()
     initialize_menus(cafeteria, "cafeteria_march_menu.csv");
     record_customer_counts(cafeteria);
     calc_and_show_income(cafeteria);
+    
+    printf("\n~ ~ ~ ~ Normal menu for the first and last days of the month:\n");
+    printf("date--> \"%s\" soup--> \"%s\" main_dish--> \"%s\" side_dish--> \"%s\" extra--> \"%s\"\n", cafeteria->normal_menu[0].date, cafeteria->normal_menu[0].soup, cafeteria->normal_menu[0].main_dish, cafeteria->normal_menu[0].side_dish, cafeteria->normal_menu[0].extra);
+    printf("date--> \"%s\" soup--> \"%s\" main_dish--> \"%s\" side_dish--> \"%s\" extra--> \"%s\"\n", cafeteria->normal_menu[MAX_DAYS - 1].date, cafeteria->normal_menu[MAX_DAYS - 1].soup, cafeteria->normal_menu[MAX_DAYS - 1].main_dish, cafeteria->normal_menu[MAX_DAYS - 1].side_dish, cafeteria->normal_menu[MAX_DAYS - 1].extra);
+
+    printf("\n~ ~ ~ ~ Vegan menu for the first and last days of the month:\n");
+    printf("date--> \"%s\" soup--> \"%s\" main_dish--> \"%s\" side_dish--> \"%s\" extra--> \"%s\"\n", cafeteria->vegan_menu[0].date, cafeteria->vegan_menu[0].soup, cafeteria->vegan_menu[0].main_dish, cafeteria->vegan_menu[0].side_dish, cafeteria->vegan_menu[0].extra);
+    printf("date--> \"%s\" soup--> \"%s\" main_dish--> \"%s\" side_dish--> \"%s\" extra--> \"%s\"\n", cafeteria->vegan_menu[MAX_DAYS - 1].date, cafeteria->vegan_menu[MAX_DAYS - 1].soup, cafeteria->vegan_menu[MAX_DAYS - 1].main_dish, cafeteria->vegan_menu[MAX_DAYS - 1].side_dish, cafeteria->vegan_menu[MAX_DAYS - 1].extra);
+
+    printf("\n~ ~ ~ ~ Vegetarian menu for the first and last days of the month:\n");
+    printf("date--> \"%s\" soup--> \"%s\" main_dish--> \"%s\" side_dish--> \"%s\" extra--> \"%s\"\n", cafeteria->vegetarian_menu[0].date, cafeteria->vegetarian_menu[0].soup, cafeteria->vegetarian_menu[0].main_dish, cafeteria->vegetarian_menu[0].side_dish, cafeteria->vegetarian_menu[0].extra);
+    printf("date--> \"%s\" soup--> \"%s\" main_dish--> \"%s\" side_dish--> \"%s\" extra--> \"%s\"\n", cafeteria->vegetarian_menu[MAX_DAYS - 1].date, cafeteria->vegan_menu[MAX_DAYS - 1].soup, cafeteria->vegan_menu[MAX_DAYS - 1].main_dish, cafeteria->vegan_menu[MAX_DAYS - 1].side_dish, cafeteria->vegan_menu[MAX_DAYS - 1].extra);
 
     // Free memory
     free(cafeteria->normal_menu);
