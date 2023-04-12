@@ -74,6 +74,10 @@ int main()
     printf("date--> \"%s\" soup--> \"%s\" main_dish--> \"%s\" side_dish--> \"%s\" extra--> \"%s\"\n", cafeteria->vegetarian_menu[0].date, cafeteria->vegetarian_menu[0].soup, cafeteria->vegetarian_menu[0].main_dish, cafeteria->vegetarian_menu[0].side_dish, cafeteria->vegetarian_menu[0].extra);
     printf("date--> \"%s\" soup--> \"%s\" main_dish--> \"%s\" side_dish--> \"%s\" extra--> \"%s\"\n", cafeteria->vegetarian_menu[MAX_DAYS - 1].date, cafeteria->vegan_menu[MAX_DAYS - 1].soup, cafeteria->vegan_menu[MAX_DAYS - 1].main_dish, cafeteria->vegan_menu[MAX_DAYS - 1].side_dish, cafeteria->vegan_menu[MAX_DAYS - 1].extra);
 
+    printf("Counts for the normal menu  ====> Student:%d, Academic:%d, Administrative:%d\n", cafeteria->normal_menu[2].sales_count[0], cafeteria->normal_menu[2].sales_count[1], cafeteria->normal_menu[2].sales_count[2]);
+    printf("\nCounts for the vegan menu  ====> Student:%d, Academic:%d, Administrative:%d\n", cafeteria->vegan_menu[9].sales_count[0], cafeteria->vegan_menu[9].sales_count[1], cafeteria->vegan_menu[9].sales_count[2]);
+    printf("\nCounts for the vegetarian menu  ====> Student:%d, Academic:%d, Administrative:%d\n", cafeteria->vegetarian_menu[19].sales_count[0], cafeteria->vegetarian_menu[19].sales_count[1], cafeteria->vegetarian_menu[19].sales_count[2]);
+    
     // Free memory
     free(cafeteria->normal_menu);
     free(cafeteria->vegan_menu);
