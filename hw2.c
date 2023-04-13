@@ -32,18 +32,17 @@ typedef struct
 
 } Cafeteria;
 
-// Function declarations
+// Functions
 void initialize_menus(Cafeteria *cafeteria, char *csv_file_name);
 void record_customer_counts(Cafeteria *cafeteria);
 void calc_and_show_income(Cafeteria *cafeteria);
 
-// Main function
 int main()
 {
-    // Initialize random seed
+
     srand(time(NULL));
 
-    // Allocate memory for cafeteria struct
+    // Allocate memory for cafeteria 
     Cafeteria *cafeteria = (Cafeteria *)malloc(sizeof(Cafeteria));
     if (cafeteria == NULL)
     {
@@ -57,7 +56,6 @@ int main()
     cafeteria->vegan_menu = NULL;
     cafeteria->vegetarian_menu = NULL;
 
-    // Initialize menus and customer counts, and calculate income
     initialize_menus(cafeteria, "cafeteria_march_menu.csv");
     record_customer_counts(cafeteria);
     calc_and_show_income(cafeteria);
@@ -77,8 +75,7 @@ int main()
     printf("Counts for the normal menu  ====> Student:%d, Academic:%d, Administrative:%d\n", cafeteria->normal_menu[2].sales_count[0], cafeteria->normal_menu[2].sales_count[1], cafeteria->normal_menu[2].sales_count[2]);
     printf("\nCounts for the vegan menu  ====> Student:%d, Academic:%d, Administrative:%d\n", cafeteria->vegan_menu[9].sales_count[0], cafeteria->vegan_menu[9].sales_count[1], cafeteria->vegan_menu[9].sales_count[2]);
     printf("\nCounts for the vegetarian menu  ====> Student:%d, Academic:%d, Administrative:%d\n", cafeteria->vegetarian_menu[19].sales_count[0], cafeteria->vegetarian_menu[19].sales_count[1], cafeteria->vegetarian_menu[19].sales_count[2]);
-    
-    // Free memory
+  
     free(cafeteria->normal_menu);
     free(cafeteria->vegan_menu);
     free(cafeteria->vegetarian_menu);
@@ -87,7 +84,6 @@ int main()
     return 0;
 }
 
-// Function implementations
 void initialize_menus(Cafeteria *cafeteria, char *csv_file_name)
 {
     // Open CSV file
@@ -163,7 +159,6 @@ void initialize_menus(Cafeteria *cafeteria, char *csv_file_name)
         }
     }
 
-    // Close CSV file
     fclose(csv_file);
 }
 
@@ -204,7 +199,6 @@ void calc_and_show_income(Cafeteria *cafeteria)
 void record_customer_counts(Cafeteria *cafeteria)
 {
 
-    // Seed random number generator
     srand(time(NULL));
 
     // Loop through each day and menu type
