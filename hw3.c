@@ -30,6 +30,7 @@ hash_table *initializeHashTable(unsigned numOfThread, unsigned numOfElements);
 void *insertionFunction(void *parameters);
 void swap(node *a, node *b);
 void bubbleSort(node *start);
+void *sort(void *param);
 
 unsigned countNumOfElements(char *filename)
 {
@@ -177,6 +178,13 @@ void bubbleSort(node *start)
     } while (swapped);
 }
 
+void *sort(void *param){
+	
+	node* first= (node*)param;
+	bubbleSort(first);
+	return NULL;
+}
+
 int main(int argc, char *argv[])
 {
     if (argc != 3)
@@ -278,10 +286,42 @@ int main(int argc, char *argv[])
             return 1;
         }
     }
-
+	//create threads for sorting
+    pthread_t *sortThreads = (pthread_t *)malloc((numOfThreads * (numOfThreads + 1)/ 2) * sizeof(pthread_t));
+    if (sortThreads == NULL)
+    {
+        printf("Error creating threads.\n");
+        free(numbers);
+        free(ht->list);
+        free(ht);
+        return 1;
+    }
+	
+	
     for (unsigned i = 0; i < numOfThreads * (numOfThreads + 1) / 2; i++)
     {
-        bubbleSort(ht->list[i]);
+		if (pthread_create(&sortThreads[i], NULL, sort, ht->list[i]) != 0)
+        {
+            printf("Error creating thread.\n");
+            free(numbers);
+            free(ht->list);
+            free(ht);
+            free(sortThreads);
+            return 1;
+        }
+    }
+	
+	for (unsigned i = 0; i < numOfThreads * (numOfThreads + 1) / 2; i++)
+    {
+        if (pthread_join(sortThreads[i], NULL) != 0)
+        {
+            printf("Error joining thread.\n");
+            free(numbers);
+            free(ht->list);
+            free(ht);
+            free(sortThreads);
+            return 1;
+        }
     }
 
     // Print the sorted hash table
@@ -293,6 +333,7 @@ int main(int argc, char *argv[])
             printf("%u ", curr->value);
             curr = curr->r_node;
         }
+        printf("\n");
     }
 
     // Free allocated memory
@@ -310,7 +351,7 @@ int main(int argc, char *argv[])
     free(ht->list);
     free(ht);
     free(threads);
-
+	free(sortThreads);
     for (unsigned i = 0; i < numOfThreads * (numOfThreads + 1) / 2; i++)
     {
         pthread_mutex_destroy(&locks[i]);
