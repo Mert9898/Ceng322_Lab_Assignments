@@ -1,3 +1,6 @@
+//250201017 Yağmur Nisa Şekerci
+//260201011 Mert Ayaz Özkan
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
