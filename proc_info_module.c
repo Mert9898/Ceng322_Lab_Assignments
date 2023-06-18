@@ -9,6 +9,8 @@
 #include <linux/proc_fs.h>
 #include <linux/uaccess.h>
 #include <linux/slab.h>
+#include <linux/seq_file.h>
+#include <linux/mm.h> // Add this to use `get_mm_rss()`
 
 MODULE_LICENSE("GPL");
 
@@ -23,33 +25,14 @@ MODULE_PARM_DESC(upname, "User Process Name");
 struct task_struct *task;
 
 static int proc_info_module_show(struct seq_file *m, void *v)
-{
+{   char state = task_state_to_char(task); 
     seq_printf(m, "Name: %s\n", task->comm);
     seq_printf(m, "PID: %d\n", task->pid);
     seq_printf(m, "PPID: %d\n", task->real_parent->pid);
     seq_printf(m, "UID: %d\n", task->cred->uid.val);
 
-    char state;
-    switch (task->state)
-    {
-    case TASK_RUNNING:
-        state = 'R';
-        break;
-    case TASK_INTERRUPTIBLE:
-        state = 'S';
-        break;
-    case TASK_UNINTERRUPTIBLE:
-        state = 'D';
-        break;
-    case TASK_STOPPED:
-        state = 'T';
-        break;
-    default:
-        state = 'X';
-        break;
-    }
 
-    if (task->mm && task->state == TASK_RUNNING) {
+    if (task->mm && task_state_index(task) == TASK_RUNNING) { // use `task_state_index()` instead of `task->state`
         unsigned long rss = get_mm_rss(task->mm);
         unsigned long rss_kb = rss * PAGE_SIZE / 1024;
         seq_printf(m, "Memory Usage: %lu KB\n", rss_kb);
@@ -68,12 +51,12 @@ static int proc_info_module_open(struct inode *inode, struct file *file)
     return single_open(file, proc_info_module_show, NULL);
 }
 
-static const struct file_operations proc_info_module_fops = {
-    .owner = THIS_MODULE,
-    .open = proc_info_module_open,
-    .read = seq_read,
-    .llseek = seq_lseek,
-    .release = single_release,
+// Replace struct file_operations with struct proc_ops
+static const struct proc_ops proc_info_module_fops = {
+    .proc_open = proc_info_module_open,
+    .proc_read = seq_read,
+    .proc_lseek = seq_lseek,
+    .proc_release = single_release,
 };
 
 static int __init proc_info_module_init(void)
