@@ -48,6 +48,12 @@ static int proc_info_module_show(struct seq_file *m, void *v)
         state = 'X';
         break;
     }
+
+    if (task->mm && task->state == TASK_RUNNING) {
+        unsigned long rss = get_mm_rss(task->mm);
+        unsigned long rss_kb = rss * PAGE_SIZE / 1024;
+        seq_printf(m, "Memory Usage: %lu KB\n", rss_kb);
+    }
     seq_printf(m, "State: %c\n", state);
 
     // Construct the path using the known PID
