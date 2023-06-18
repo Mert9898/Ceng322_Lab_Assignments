@@ -32,7 +32,7 @@ static int proc_info_module_show(struct seq_file *m, void *v)
     seq_printf(m, "UID: %d\n", task->cred->uid.val);
 
 
-    if (task->mm && task_state_index(task) == TASK_RUNNING) { // use `task_state_index()` instead of `task->state`
+    if (task->mm && task_state_index(task) == TASK_RUNNING) { 
         unsigned long rss = get_mm_rss(task->mm);
         unsigned long rss_kb = rss * PAGE_SIZE / 1024;
         seq_printf(m, "Memory Usage: %lu KB\n", rss_kb);
@@ -41,7 +41,7 @@ static int proc_info_module_show(struct seq_file *m, void *v)
 
     // Construct the path using the known PID
     seq_printf(m, "Path: /proc/%d\n", task->pid);
-    // Note: This path construction assumes that the process exists and has a valid PID.
+ 
 
     return 0;
 }
@@ -51,7 +51,6 @@ static int proc_info_module_open(struct inode *inode, struct file *file)
     return single_open(file, proc_info_module_show, NULL);
 }
 
-// Replace struct file_operations with struct proc_ops
 static const struct proc_ops proc_info_module_fops = {
     .proc_open = proc_info_module_open,
     .proc_read = seq_read,
