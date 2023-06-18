@@ -4,16 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 int main(int argc, char *argv[])
 {
+    char cmd[256] = {0};
+    
     if (argc != 4)
     {
-        fprintf(stderr, "Usage: %s <module path> -pid|-pname <value>\n", argv[0]);
+        printf("Incorrect number of arguments.\n");
         return 1;
     }
-
-    char cmd[256] = {0};
 
     if (strcmp(argv[2], "-pid") == 0)
     {
@@ -25,20 +26,20 @@ int main(int argc, char *argv[])
     }
     else
     {
-        fprintf(stderr, "Unknown option: %s\n", argv[2]);
+        printf("Invalid argument type. Use -pid or -pname.\n");
         return 1;
     }
 
-    if (system(cmd) != 0)
+    if (system(cmd))
     {
-        perror("Failed to load module");
+        printf("Error inserting module: %s\n", strerror(errno));
         return 1;
     }
 
     FILE *fp = fopen("/proc/proc_info_module", "r");
     if (fp == NULL)
     {
-        perror("Failed to open /proc/proc_info_module");
+        printf("Error opening /proc file: %s\n", strerror(errno));
         return 1;
     }
 
@@ -49,9 +50,9 @@ int main(int argc, char *argv[])
     }
     fclose(fp);
 
-    if (system("rmmod proc_info_module") != 0)
+    if (system("rmmod proc_info_module"))
     {
-        perror("Failed to remove module");
+        printf("Error removing module: %s\n", strerror(errno));
         return 1;
     }
 
