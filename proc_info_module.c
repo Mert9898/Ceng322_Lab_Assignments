@@ -80,11 +80,16 @@ static int __init proc_info_module_init(void)
 {
     struct proc_dir_entry *entry;
 
-    printk(KERN_INFO "proc_info_module loaded\n");
+    printk(KERN_INFO "proc_info_module: loading module.\n");
 
     if (upid > 0)
     {
         task = pid_task(find_vpid(upid), PIDTYPE_PID);
+        if (!task)
+        {
+            printk(KERN_ERR "proc_info_module: No task found with PID %d\n", upid);
+            return 2;
+        }
     }
     else if (upname)
     {
@@ -95,21 +100,26 @@ static int __init proc_info_module_init(void)
                 break;
             }
         }
+        if (!task)
+        {
+            printk(KERN_ERR "proc_info_module: No task found with name %s\n", upname);
+            return 2;
+        }
     }
-
-    if (!task)
+    else
     {
-        printk(KERN_ERR "No task found with given PID or name");
+        printk(KERN_ERR "proc_info_module: No PID or name provided\n");
         return 2;
     }
 
     entry = proc_create("proc_info_module", 0, NULL, &proc_info_module_fops);
     if (!entry)
     {
-        printk(KERN_ERR "Failed to create /proc file");
+        printk(KERN_ERR "proc_info_module: Failed to create /proc file\n");
         return 1;
     }
 
+    printk(KERN_INFO "proc_info_module: module loaded.\n");
     return 0;
 }
 
